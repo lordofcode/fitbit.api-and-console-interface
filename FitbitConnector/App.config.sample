@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="clientid" value="CLIENT ID OF YOUR APP" />
+		<add key="client_secret" value="CLIENT SECRET OF YOUR APP" />
+		<add key="callback_url" value="https://YOURWEBSITE/callback.php" />
+		<add key="staterandomstring" value="FILL IN A RANDOM STRING"/>
+		<add key="files_location" value="FULL PATH TO A FOLDER WHERE YOU WANT TO SAVE TOKENS ETC. E.G. \settings\"/>
+	</appSettings>
+</configuration>
