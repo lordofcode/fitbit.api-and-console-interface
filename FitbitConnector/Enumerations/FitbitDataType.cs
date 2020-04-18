@@ -8,6 +8,8 @@ namespace FitbitConnector.Enumerations
 	{
 		Profile = 1,
 		Badges = 2,
-		ActivityTrackerSteps = 11
+		ActivityTrackerSteps = 11,
+		ActivityTrackerDistance = 12,
+		Activities = 13
 	}
 }

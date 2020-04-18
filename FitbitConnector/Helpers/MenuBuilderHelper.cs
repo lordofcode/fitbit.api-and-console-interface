@@ -98,6 +98,12 @@ namespace FitbitConnector.Helpers
 				case MenuScreen.ExistingUserTrackerStepsMenu:
 					ShowExistingUserTrackerStepsMenu();
 					break;
+				case MenuScreen.ExistingUserTrackerDistanceMenu:
+					ShowExistingUserTrackerDistanceMenu();
+					break;
+				case MenuScreen.ExistingUserActivitiesMenu:
+					ShowExistingActivitiesMenu();
+					break;
 				case MenuScreen.SelectExistingUserMenu:
 					ShowSelectExistingUserMenu();
 					break;
@@ -171,7 +177,9 @@ namespace FitbitConnector.Helpers
 				"",
 				"1 Toon profielgegevens",
 				"2 Toon badges",
-				"3 Toon tracker-data, stappen deze maand"
+				"3 Toon tracker-data, stappen deze maand",
+				"4 Toon tracker-data, afstand deze maand",
+				"5 Toon activiteiten (activiteiten, doel, samenvatting)"
 			});
 			AwaitAndProcessInput();
 		}
@@ -233,6 +241,93 @@ namespace FitbitConnector.Helpers
 			AwaitAndProcessInput();
 		}
 
+		private static void ShowExistingUserTrackerDistanceMenu()
+		{
+			// date can be a yyyy-MM-dd or 'today' 
+			FitbitUserHelper.PrefillValuesForUrlReplacement(new List<KeyValuePair<string, string>>() {
+				new KeyValuePair<string, string>("startdate","today"),
+				new KeyValuePair<string, string>("period","1m"),
+			});
+			var distanceData = FitbitUserHelper.GetData(FitbitDataType.ActivityTrackerDistance) as ActivityTrackerDistanceData[];
+			var distanceDataList = new List<string>();
+			foreach (var distanceLog in distanceData.OrderBy(rec => rec.dateTime))
+			{
+				foreach (var item in distanceData[0].GetAllProperties())
+				{
+					distanceDataList.Add($"{item.Name}: {item.GetValue(distanceLog)}");
+				}
+				distanceDataList.Add("================================");
+			}
+			ShowMenu(distanceDataList);
+			AwaitAndProcessInput();
+		}
+
+		private static void ShowExistingActivitiesMenu()
+		{
+			// date can be a yyyy-MM-dd or 'today' 
+			FitbitUserHelper.PrefillValuesForUrlReplacement(new List<KeyValuePair<string, string>>() {
+				new KeyValuePair<string, string>("startdate","today")
+			});
+			var activitiesData = FitbitUserHelper.GetData(FitbitDataType.Activities) as ActivitiesData;
+			var activitiesDataList = new List<string>();
+			foreach (var item in activitiesData.GetAllProperties())
+			{
+				var valueObject = item.GetValue(activitiesData);
+				activitiesDataList.Add($"{item.Name}: {valueObject}");
+				if (valueObject != null)
+				{
+					if (valueObject is ActivitiesActivityData[])
+					{
+						var subitems = (valueObject as ActivitiesActivityData[]);
+						foreach (var subitem in subitems)
+						{
+							foreach (var fielditem in subitems[0].GetAllProperties())
+							{
+								activitiesDataList.Add($"{fielditem.Name}: {fielditem.GetValue(subitem)}");
+							}
+							activitiesDataList.Add("================================");
+						}
+					}
+					if (valueObject is ActivitiesGoalData)
+					{
+						var subitem = (valueObject as ActivitiesGoalData);
+						foreach (var fielditem in subitem.GetAllProperties())
+						{
+							activitiesDataList.Add($"{fielditem.Name}: {fielditem.GetValue(subitem)}");
+						}
+						activitiesDataList.Add("================================");
+					}
+					if (valueObject is ActivitiesSummaryData)
+					{
+						var subitem = (valueObject as ActivitiesSummaryData);
+						foreach (var fielditem in subitem.GetAllProperties())
+						{
+							if (fielditem.GetValue(subitem) is ActivitiesSummaryDistanceData[])
+							{
+								activitiesDataList.Add("================================");
+								activitiesDataList.Add($"{fielditem.Name}");
+								var distanceItems = (fielditem.GetValue(subitem) as ActivitiesSummaryDistanceData[]);
+								foreach (var distanceItem in distanceItems)
+								{
+									activitiesDataList.Add($"{distanceItem.activity}: {distanceItem.distance}");
+								}
+								activitiesDataList.Add("================================");
+							}
+							else
+							{
+								activitiesDataList.Add($"{fielditem.Name}: {fielditem.GetValue(subitem)}");
+							}
+
+						}
+						activitiesDataList.Add("================================");
+					}
+				}
+			}
+			activitiesDataList.Add("================================");
+
+			ShowMenu(activitiesDataList);
+			AwaitAndProcessInput();
+		}
 		private static void ShowSelectExistingUserMenu()
 		{
 			var users = FitbitUserHelper.GetAllUsers();
@@ -290,6 +385,12 @@ namespace FitbitConnector.Helpers
 					case MenuScreen.ExistingUserTrackerStepsMenu:
 						_MenuScreen = MenuScreen.ExistingUserMenu;
 						break;
+					case MenuScreen.ExistingUserTrackerDistanceMenu:
+						_MenuScreen = MenuScreen.ExistingUserMenu;
+						break;
+					case MenuScreen.ExistingUserActivitiesMenu:
+						_MenuScreen = MenuScreen.ExistingUserMenu;
+						break;
 					case MenuScreen.SelectExistingUserMenu:
 						_MenuScreen = MenuScreen.StartMenu;
 						break;
@@ -326,6 +427,12 @@ namespace FitbitConnector.Helpers
 									break;
 								case 3:
 									_MenuScreen = MenuScreen.ExistingUserTrackerStepsMenu;
+									break;
+								case 4:
+									_MenuScreen = MenuScreen.ExistingUserTrackerDistanceMenu;
+									break;
+								case 5:
+									_MenuScreen = MenuScreen.ExistingUserActivitiesMenu;
 									break;
 							}
 						}

@@ -14,6 +14,8 @@ namespace FitbitConnector.Enumerations
 		ExistingUserProfileMenu = 22,
 		ExistingUserBadgesMenu = 23,
 		ExistingUserTrackerStepsMenu = 32,
+		ExistingUserTrackerDistanceMenu = 33,
+		ExistingUserActivitiesMenu = 34,
 		EndScreen = 99
 	}
 }
