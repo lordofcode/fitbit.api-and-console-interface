@@ -27,7 +27,7 @@ namespace FitbitApiLibrary.DataStructures
         public string fullName { get; set; }
         public string gender { get; set; }
         public string glucoseUnit { get; set; }
-        public int height { get; set; }
+        public double height { get; set; }
         public string heightUnit { get; set; }
         public string locale { get; set; }
         public string memberSince { get; set; }
@@ -38,7 +38,7 @@ namespace FitbitApiLibrary.DataStructures
         public double strideLengthWalking { get; set; }
         public string timezone { get; set; }
         public string waterUnit { get; set; }
-        public int weight { get; set; }
+        public double weight { get; set; }
         public string weightUnit { get; set; }
 
     }

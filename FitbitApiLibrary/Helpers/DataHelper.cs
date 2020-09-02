@@ -19,9 +19,19 @@ namespace FitbitApiLibrary.Helpers
 			return JsonSerializer.Deserialize<BadgeContainer>(badgeData).badges;
 		}
 
+		public static ActivitiesData ConvertStringToActivitiesObject(string activitiesData)
+		{
+			return JsonSerializer.Deserialize<ActivitiesData>(activitiesData);
+		}
+
 		public static ActivityTrackerStepsData[] ConvertStringToActivityTrackerStepsObject(string activityTrackerStepsData)
 		{
 			return JsonSerializer.Deserialize<ActivityTrackerStepsContainer>(activityTrackerStepsData).activitiesLogSteps;
+		}
+
+		public static ActivityTrackerDistanceData[] ConvertStringToActivityTrackerDistanceObject(string activityTrackerDistanceData)
+		{
+			return JsonSerializer.Deserialize<ActivityTrackerDistanceContainer>(activityTrackerDistanceData).activitiesLogDistance;
 		}
 	}
 }
