@@ -30,6 +30,16 @@ namespace FitbitApiLibrary
 			return DoWebRequest(accessToken, ReplaceUrlWithVariables(FitbitConstants.GetActivityTrackerStepsUrl, values));
 		}
 
+		public static string GetActivityTrackerDistance(string accessToken, List<KeyValuePair<string, string>> values)
+		{
+			return DoWebRequest(accessToken, ReplaceUrlWithVariables(FitbitConstants.GetActivityTrackerDistanceUrl, values));
+		}
+
+		public static string GetActivityTrackerCalories(string accessToken, List<KeyValuePair<string, string>> values)
+		{
+			return DoWebRequest(accessToken, ReplaceUrlWithVariables(FitbitConstants.GetActivityTrackerCaloriesUrl, values));
+		}
+
 		private static string ReplaceUrlWithVariables(string url, List<KeyValuePair<string,string>> values)
 		{
 			var matches = Regex.Matches(url, @"\[([a-z\-]+)\]");

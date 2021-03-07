@@ -16,6 +16,10 @@ namespace FitbitApiLibrary.Helpers
 
 		public static Badge[] ConvertStringToBadgesObject(string badgeData)
 		{
+			if (string.IsNullOrEmpty(badgeData))
+			{
+				return new Badge[] { };
+			}
 			return JsonSerializer.Deserialize<BadgeContainer>(badgeData).badges;
 		}
 
@@ -32,6 +36,11 @@ namespace FitbitApiLibrary.Helpers
 		public static ActivityTrackerDistanceData[] ConvertStringToActivityTrackerDistanceObject(string activityTrackerDistanceData)
 		{
 			return JsonSerializer.Deserialize<ActivityTrackerDistanceContainer>(activityTrackerDistanceData).activitiesLogDistance;
+		}
+
+		public static ActivityTrackerCaloriesData[] ConvertStringToActivityTrackerCaloriesObject(string activityTrackerCaloriesData)
+		{
+			return JsonSerializer.Deserialize<ActivityTrackerCaloriesContainer>(activityTrackerCaloriesData).activitiesLogCalories;
 		}
 	}
 }
